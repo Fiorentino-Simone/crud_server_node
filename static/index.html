@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CRUD Server</title>
+	<link rel="icon" href="img/icoVallauri.png" type="image/png" />
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="index.css">
+	<script src="libreria.js"></script>
+	<script src="index.js"></script>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class='col-xl-2'></div>
+			<div class='col-xl-8 col-sm-12'>
+
+				<!-- LOGO SUPERIORE -->
+				<div class="text-center" style="padding:15px">
+					<img src="img/vallauri.jpg" class="img-fluid">
+				</div>
+
+				<!-- *********************** Intestazione ************************** -->
+				<div id="divIntestazione" class='row'>
+					<div class="col-sm-4">
+						<span>Collection: </span>
+						<strong> </strong>
+					</div>
+					<div class="col-sm-3">
+						<span>Documents: </span>
+						<strong> </strong>
+					</div>
+					<div class="col-sm-3">
+					</div>
+					<div class='col-sm-2'>
+						<button type="button" class="btn btn-success" id="btnAdd">
+							Add
+						</button>
+					</div>
+				</div>
+
+				<!-- ************************** FILTERS *************************** -->
+				<div class="card">
+					<div class="card-header bg-secondary text-white font-weight-bold">
+						Filters
+					</div>
+					<div class="card-body">
+						<div class='row'>
+							<!-- ListBox Hair  -->
+							<div class="col-xl-4 col-sm-4 form-group text-center" id="divHair">
+								<div class="form-check-inline">
+									<label for="lstHair" class="checkbox-inline font-weight-bold"
+										style="padding-right:10px">
+										Hair:
+									</label>
+									<select class="form-control" id="lstHair">
+										<option>Blonde</option>
+										<option>Brown</option>
+										<option>Gray</option>
+									</select>
+								</div>
+							</div>
+
+							<div class='col-xl-1 col-sm-1'> </div>
+
+							<div class='col-xl-5 col-sm-5 form-group'>
+								<div class="form-check-inline">
+									<span class="font-weight-bold" style="padding-right:10px">
+										Gender:
+									</span>
+									<label class="form-check-label">
+										<input type="checkbox" class="form-check-input" value="m" id="chkMale">M
+									</label>
+								</div>
+								<div class="form-check-inline">
+									<label class="form-check-label">
+										<input type="checkbox" class="form-check-input" value="f" id="chkFemale">F
+									</label>
+								</div>
+							</div>
+
+							<div class='col-xl-1 col-sm-2'>
+								<button type="button" class="btn btn-success" id="btnFind">
+									Find
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- *********************** Main Section ************************* -->
+				<div class="card">
+					<div class="card-body">
+						<div class='row'>
+
+							<!-- collections -->
+							<div class='col-xl-2 col-sm-12'>
+								<div class="bg-secondary" id="divCollections">
+									<label>
+										<input type="radio" name="optCollections">
+										<span> </span>
+									</label>
+								</div>
+							</div>
+
+							<!-- tabella-->
+							<div class='col-xl-6 col-sm-12'>
+								<div class="table-responsive ">
+									<table class="table table-hover" style="font-size:10pt" id="mainTable">
+										<thead class="bg-secondary" style="color:white">
+											<tr>
+												<th width="45%">ID</th>
+												<th width="20%">val</th>
+												<th width="35%"></th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<!-- dettagli-->
+							<div class='col-xl-4 col-sm-12' id="divDettagli">
+								<!--textarea></textarea-->
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class='col-xl-2'></div>
+		</div>
+
+	</div>
+</body>
+
+</html>

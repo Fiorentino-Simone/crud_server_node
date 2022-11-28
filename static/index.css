@@ -1,0 +1,79 @@
+#divIntestazione {
+    border: 1px solid #ccc;
+    margin: 10px 2px;
+	padding:10px 5px;
+    font-style: italic;
+}
+
+#divCollections {
+    color: white;
+	padding: 16px 0px 16px 10px;
+	font-size: 12pt;
+    user-select: none;
+}
+
+#divDettagli {
+    border: 1px solid #dfdfdf;
+    width: 90%;
+    font-size: 10pt;
+    padding-top: 15px;
+}
+
+#divDettagli textarea {
+    border: none;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11pt;
+}
+
+
+/* *************************** */
+
+
+#mainTable tbody tr td:last-of-type {
+    text-align: right;
+}
+
+#mainTable tbody tr td:last-of-type div {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin: 2px;
+    background-image: url(img/icons.png);
+    /* fa in modo che l'immagine non debordi nel padding */
+    background-origin: content-box;
+}
+
+#mainTable tbody tr td:last-of-type div:nth-of-type(1) {
+    /* 1°=horizonal,  2°=vertical */
+    /* 16*4=64,    16*7=112px*/
+    background-position: -64px -112px;
+}
+#mainTable tbody tr td:last-of-type div:nth-of-type(2) {
+    /* 1°=horizonal,  2°=vertical */
+    /* 16*15=240,    16*6=96px*/
+    background-position: -240px -96px;
+}
+#mainTable tbody tr td:last-of-type div:nth-of-type(3) {
+    /* 1°=horizonal,  2°=vertical */
+    /* 16*11=176,    16*6=96px*/
+    background-position: -176px -96px;
+}
+
+/* *************************** */
+
+#mainTable tbody tr td:not(:last-child):hover {
+    cursor: pointer;
+}
+#mainTable tbody tr td div:hover {
+    cursor: pointer;
+}
+
+ 
+
+/* terminale xs */
+@media  (max-width:576px) { 
+	#divHair {
+		text-align:left !important;
+	}
+}

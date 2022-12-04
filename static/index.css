@@ -69,19 +69,6 @@
     cursor: pointer;
 }
 
-
-#mainTable tbody tr td{
-    font-size: 9pt;
-    padding: 4px;
-}
-#mainTable tbody tr td:first-of-type{
-    font-size: 8pt;
-    padding-right: 12px;
-}
-#divDettagli{
-    margin-left: 15px;
-}
-
  
 
 /* terminale xs */
@@ -89,4 +76,15 @@
 	#divHair {
 		text-align:left !important;
 	}
+    #mainTable tbody tr td{
+        font-size: 9pt;
+        padding: 4px;
+    }
+    #mainTable tbody tr td:first-of-type{
+        font-size: 8pt;
+        padding-right: 12px;
+    }
+    #divDettagli{
+        margin-left: 15px;
+    }
 }

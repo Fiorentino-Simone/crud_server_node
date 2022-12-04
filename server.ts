@@ -4,9 +4,11 @@ import fs from "fs";
 import dotenv from "dotenv";
 import { MongoClient, ObjectId } from "mongodb";
 import express from "express";
+import cors from "cors";
+import fileUpload from "express-fileupload";
 
 // config
-const PORT = process.env.PORT || 1337;
+const PORT = 1337;
 dotenv.config({ path: ".env" });
 const app = express();
 const connectionString: any = process.env.connectionString;
@@ -15,6 +17,13 @@ const DBNAME = "MongoDB_Esercizi";
 //CREAZIONE E AVVIO DEL SERVER HTTP
 let server = http.createServer(app);
 let paginaErrore: string = "";
+
+const corsOptions = {
+  origin: function (origin: any, callback: any) {
+    return callback(null, true);
+  },
+  credentials: true,
+};
 
 server.listen(PORT, () => {
   init();
@@ -58,6 +67,9 @@ app.use("/", (req: any, res: any, next: any) => {
   next();
 });
 
+// 5 Upload dei file binari
+app.use("/", fileUpload({ limits: { fileSize: 20 * 1024 * 1024 } })); // 20 MB
+
 // Apertura della connessione
 app.use("/api/", (req: any, res: any, next: any) => {
   let connection = new MongoClient(connectionString);
@@ -94,7 +106,7 @@ app.get(
     let gender = req.params.gender;
     let hair = req.params.hair;
 
-    let collection = req.client.db(DBNAME).collection("unicorns");
+    let collection = req.client.db(DBNAME).collection("Unicorn");
     collection.find({ gender, hair }).toArray((err: any, data: any) => {
       if (err) {
         res.status(500);

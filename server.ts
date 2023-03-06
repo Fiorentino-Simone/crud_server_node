@@ -1,4 +1,5 @@
 import http from "http";
+import https from "https";
 import url from "url";
 import fs from "fs";
 import dotenv from "dotenv";
@@ -8,15 +9,15 @@ import cors from "cors";
 import fileUpload from "express-fileupload";
 
 // config
-const PORT = 1337;
+const HTTP_PORT = 1337;
 dotenv.config({ path: ".env" });
 const app = express();
 const connectionString: any = process.env.connectionString;
 const DBNAME = "MongoDB_Esercizi";
-
-//CREAZIONE E AVVIO DEL SERVER HTTP
-let server = http.createServer(app);
-let paginaErrore: string = "";
+const HTTPS_PORT = 1338
+const privateKey  = fs.readFileSync("keys/privateKey.pem", "utf8");
+const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
+const credentials = { "key": privateKey, "cert": certificate }; 
 
 const corsOptions = {
   origin: function (origin: any, callback: any) {
@@ -25,9 +26,17 @@ const corsOptions = {
   credentials: true,
 };
 
-server.listen(PORT, () => {
-  init();
-  console.log("Server in ascolto sulla porta " + PORT);
+let paginaErrore: string = "";
+
+/* ****************** Creazione ed Avvio del Server ************************ */
+let httpServer = http.createServer(app);
+httpServer.listen(HTTP_PORT, () => {
+    init();
+});
+
+let httpsServer = https.createServer(credentials, app);
+httpsServer.listen(HTTPS_PORT, function(){
+	console.log("Server in ascolto sulle porte HTTP:" + HTTP_PORT + ", HTTPS:" + HTTPS_PORT);
 });
 
 function init() {
@@ -69,6 +78,9 @@ app.use("/", (req: any, res: any, next: any) => {
 
 // 5 Upload dei file binari
 app.use("/", fileUpload({ limits: { fileSize: 20 * 1024 * 1024 } })); // 20 MB
+
+// 4. cors
+app.use("/", cors(corsOptions));
 
 // Apertura della connessione
 app.use("/api/", (req: any, res: any, next: any) => {
@@ -129,12 +141,12 @@ app.get("/api/:collection", (req: any, res: any, next: any) => {
       res.status(500);
       res.send("Errore esecuzione query");
     } else {
-      let response = [];
-      for (const item of data) {
-        let key = Object.keys(item)[1];
-        response.push({ _id: item["_id"], val: item[key] });
-      }
-      res.send(response);
+      // let response = [];
+      // for (const item of data) {
+      //   let key = Object.keys(item)[1];
+      //   response.push({ _id: item["_id"], val: item[key] });
+      // }
+      res.send(data);
     }
     req.client.close();
   });

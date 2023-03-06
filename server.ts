@@ -9,11 +9,11 @@ import cors from "cors";
 import fileUpload from "express-fileupload";
 
 // config
-const HTTP_PORT = 1337;
 dotenv.config({ path: ".env" });
 const app = express();
 const connectionString: any = process.env.connectionString;
 const DBNAME = "MongoDB_Esercizi";
+const HTTP_PORT = process.env.port || 1337;
 const HTTPS_PORT = 1338
 //const privateKey  = fs.readFileSync("keys/privateKey.pem", "utf8");
 //const certificate = fs.readFileSync("keys/certificate.crt", "utf8");

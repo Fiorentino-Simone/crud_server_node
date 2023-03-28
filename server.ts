@@ -14,10 +14,10 @@ const app = express();
 const connectionString: any = process.env.connectionString;
 const DBNAME = "MongoDB_Esercizi";
 const HTTP_PORT = process.env.port || 1337;
-const HTTPS_PORT = 1338
-//const privateKey  = fs.readFileSync("keys/privateKey.pem", "utf8");
-//const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
-//const credentials = { "key": privateKey, "cert": certificate }; 
+const HTTPS_PORT = 1338;
+const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");
+const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
+const credentials = { key: privateKey, cert: certificate };
 
 const corsOptions = {
   origin: function (origin: any, callback: any) {
@@ -34,10 +34,10 @@ httpServer.listen(HTTP_PORT, () => {
     init();
 });
 
-/*let httpsServer = https.createServer(credentials, app);
+let httpsServer = https.createServer(credentials, app);
 httpsServer.listen(HTTPS_PORT, function(){
 	console.log("Server in ascolto sulle porte HTTP:" + HTTP_PORT + ", HTTPS:" + HTTPS_PORT);
-});*/
+});
 
 function init() {
   fs.readFile("./static/error.html", (err: any, data: any) => {

@@ -13,29 +13,72 @@ dotenv.config({ path: ".env" });
 const app = express();
 const connectionString: any = process.env.connectionString;
 const DBNAME = "MongoDB_Esercizi";
-const HTTP_PORT = process.env.port || 1337;
+const HTTP_PORT = 1337;
 const HTTPS_PORT = 1338;
 const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");
 const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 
-const corsOptions = {
-  origin: function (origin: any, callback: any) {
-    return callback(null, true);
-  },
-  credentials: true,
-};
+// const allowedOrigins = [
+//   'capacitor://localhost',
+//   'ionic://localhost',
+//   'http://localhost',
+//   'http://localhost:8080',
+//   'http://localhost:8100',
+// ];
+
+// // Reflect the origin if it's in the allowed list or not defined (cURL, Postman, etc.)
+// const corsOptions = {
+//   origin: (origin:any, callback:any) => {
+//     if (allowedOrigins.includes(origin) || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Origin not allowed by CORS'));
+//     }
+//   },
+// };
+// const whitelist = [
+//   "http://my-crud-server.herokuapp.com ", //inserire il nostro sito pubblicato su render/heroku
+//   "https://my-crud-server.herokuapp.com ",
+//   "https://crud-server-fiorentino.onrender.com/",
+//   "http://localhost:1337",
+//   "https://localhost:1338",
+//   "https://192.168.1.33:1338/api/",
+//   "http://192.168.1.33:1337/api/",
+//   "https://192.168.1.33:1338",
+//   "http://192.168.1.33:1337",
+//   "https://10.88.206.65:1338",
+//   "http://10.88.206.65:1337",
+//   "https://cordovaapp",
+//   "http://localhost:4200",
+//   'capacitor://localhost',
+//   'ionic://localhost',
+//   'http://localhost',
+//   'http://localhost:8080',
+//   'http://localhost:8100',
+// ];
+
+// const corsOptions = {
+//   origin: function (origin: any, callback: any) {
+//     if (!origin) return callback(null, true);
+//     if (whitelist.indexOf(origin) === -1) {
+//       var msg = `The CORS policy for this site does not  allow access from the specified Origin.`;
+//       return callback(new Error(msg), false);
+//     } else return callback(null, true);
+//   },
+//   credentials: true,
+// };
 
 let paginaErrore: string = "";
 
 /* ****************** Creazione ed Avvio del Server ************************ */
 let httpServer = http.createServer(app);
-httpServer.listen(HTTP_PORT, () => {
+httpServer.listen(HTTP_PORT, "0.0.0.0", () => {
     init();
 });
 
 let httpsServer = https.createServer(credentials, app);
-httpsServer.listen(HTTPS_PORT, function(){
+httpsServer.listen(HTTPS_PORT,"0.0.0.0", function(){
 	console.log("Server in ascolto sulle porte HTTP:" + HTTP_PORT + ", HTTPS:" + HTTPS_PORT);
 });
 
@@ -79,8 +122,14 @@ app.use("/", (req: any, res: any, next: any) => {
 // 5 Upload dei file binari
 app.use("/", fileUpload({ limits: { fileSize: 20 * 1024 * 1024 } })); // 20 MB
 
-// 4. cors
-app.use("/", cors(corsOptions));
+const corsOptions = {
+  origin: function(origin:any, callback:any) {
+  return callback(null, true);
+  },
+  credentials: true
+ };
+ app.use("/", cors(corsOptions));
+
 
 // Apertura della connessione
 app.use("/api/", (req: any, res: any, next: any) => {
@@ -234,6 +283,41 @@ app.post("/api/:collection", (req: any, res: any, next: any) => {
     }
     req.client.close();
   });
+});
+
+//generic route type post for getting items of a collection with parameters for filtering
+app.post("/api/:collection/getItems", (req: any, res: any, next: any) => {
+  let collectionSelected = req.params.collection;
+  let params = req.body.stream;
+  let collection = req.client.db(DBNAME).collection(collectionSelected);
+  collection.find(params).toArray((err: any, data: any) => {
+    if (err) {
+      res.status(500);
+      res.send("Errore esecuzione query");
+    } else {
+      res.send(data);
+    }
+    req.client.close();
+  });
+});
+
+app.post("/api/:collection/limit", (req: any, res: any, next: any) => {
+  let collectionSelected = req.params.collection;
+  let params = req.body.stream;
+  let collection = req.client.db(DBNAME).collection(collectionSelected);
+  collection
+    .find(params)
+    .limit(2)
+    .toArray((err: any, data: any) => {
+      if (err) {
+        res.status(500);
+        res.send("Errore esecuzione query");
+      } else {
+        res.send(data);
+      }
+      req.client.close();
+    }
+  );
 });
 
 /***********DEFAULT ROUTE****************/
